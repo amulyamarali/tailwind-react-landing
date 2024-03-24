@@ -32,3 +32,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
      </DataProvider>
   </React.StrictMode>,
 )
+
