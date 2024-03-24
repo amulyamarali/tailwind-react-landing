@@ -1,94 +1,102 @@
-// import React from 'react';
-// import { useLocation } from 'react-router-dom';
-
-// function Template() {
-//   console.log("Template component rendered");
-//   const location = useLocation();
-//   const data = location.state;
-//   console.log("location", location);
-
-//   return (
-//     <div>
-//       <h2>Template Component</h2>
-//       {data ? (
-//         <p>State value: {data}</p>
-//       ) : (
-//         <p>State is not defined</p>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Template;
-
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useData } from './dataContext'; // Import the useData hook
 import Markdown from 'react-markdown';
 import { db } from '../../firebase';
-import { collection, getDocs, updateDoc, addDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const Template = () => {
-  const [inputValue, setInputValue] = React.useState('bruh');
-  const [editMode, setEditMode] = React.useState(false);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [tags, setTags] = useState([]);
+  const [color, setColor] = useState('');
+  const [editMode, setEditMode] = useState(true); // Initially set to edit mode
   const location = useLocation();
-  console.log('location', location); // Add this line
-
   const { data } = useData(); // Get the data from the context
 
   useEffect(() => {
-    // Perform any action you need to with the data
-    console.log('Data from context:', data.title);
-    console.log('here-->',data.desc);
-    setInputValue(data.desc);
+    if (data) {
+      setTitle(data.title || '');
+      setDesc(data.desc || '');
+      setTags(data.tags || []);
+      setColor(data.color || '');
+    }
   }, [data]);
 
   const handleSaveClick = async () => {
     try {
-      if (!data) {
-        console.error('No data available to save');
-        return;
-      }
-  
       const timestamp = serverTimestamp();
-      // Use addDoc without specifying the document ID
-      await addDoc(collection(db, "User1"), {
-        title: data.title,
-        desc: inputValue,
-        tags: data.tags,
-        color: data.color,
-        timestamp: timestamp,
+      await addDoc(collection(db, 'User1'), {
+        title,
+        desc,
+        tags,
+        color,
+        timestamp,
       });
-      console.log("Note added successfully");
+      console.log('Note added successfully');
     } catch (error) {
-      console.error("Error saving note:", error);
+      console.error('Error saving note:', error);
     }
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-      <h1 style={{ fontWeight: 'bold', fontSize: '3em' }}>{data.title}</h1>
-      <div className='flex flex-col justify-center items-center gap-5'>
-      {
-        editMode ? (
-          <textarea
-          value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            style={{ width: '100%', height: '300px' }}
-            className='text-black'
+    <div className='flex flex-col justify-center items-center w-full gap-8'>
+      <div className='font-bold text-3xl text-gray-700'>Title:</div>
+      <input
+        type='text'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className='border-2 border-gray-300 rounded-md p-2 w-80 text-lg focus:outline-none focus:border-blue-500'
+      />
+      <div className='font-bold text-3xl text-gray-700'>Description:</div>
+      {editMode ? (
+        <textarea
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+          placeholder='Start Editing (Markdown Enabled)'
+          className='border-2 border-gray-300 rounded-md p-2 w-96 h-60 text-lg focus:outline-none focus:border-blue-500'
+        />
+      ) : (
+        <div className='w-96 h-60'>
+          <Markdown>{desc}</Markdown>
+        </div>
+      )}
+      <button
+        onClick={() => setEditMode(!editMode)}
+        className='bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 hover:bg-blue-600 focus:outline-none'
+      >
+        {editMode ? 'Preview' : 'Edit'}
+      </button>
+      <div className='font-bold text-3xl text-gray-700'>Tags:</div>
+      <ul>
+        {tags.map((tag, index) => (
+          <li key={index}>
+            <input
+              type='text'
+              value={tag}
+              onChange={(e) => {
+                const newTags = [...tags];
+                newTags[index] = e.target.value;
+                setTags(newTags);
+              }}
+              className='border-2 border-gray-300 rounded-md p-2 w-80 text-lg focus:outline-none focus:border-blue-500'
             />
-        ) : (
-          <div className='w-[200px] h-[200px] text-black'>
-            <Markdown>{inputValue}</Markdown>
-          </div>
-        )
-      }
-            <div className='bg-green-500'>
-  <button onClick={() => setEditMode(!editMode)} style={{ marginLeft: '20px' }}> {editMode ? 'Preview' : 'Edit'}</button>
-  <button onClick={handleSaveClick} className='p-2' style={{ marginLeft: '20px' }}>Save</button>
-</div>
-
-      </div>
+          </li>
+        ))}
+      </ul>
+      <div className='font-bold text-3xl text-gray-700'>Color:</div>
+      <input
+        type='text'
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
+        className='border-2 border-gray-300 rounded-md p-2 w-80 text-lg focus:outline-none focus:border-blue-500'
+      />
+      <button
+        onClick={handleSaveClick}
+        className='bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 hover:bg-green-600 focus:outline-none'
+      >
+        Save
+      </button>
     </div>
   );
 };

@@ -24,7 +24,7 @@ const HeroSection = () => {
             <div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Link to="/notes">
-                        <span className='text-[#208486]' style={{ fontWeight: 'bold', fontSize: '20px', padding: '10px', backgroundColor: '#f0f0f0' }}>
+                        <span className='text-[#208486] border-2 border-[#ebc5c5] rounded-md' style={{ fontWeight: 'bold', fontSize: '20px', padding: '10px', backgroundColor: '#f0f0f0' }}>
                             DASHBOARD
                         </span>
                     </Link>
