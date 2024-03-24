@@ -5,15 +5,15 @@ function App() {
 
   return (
     <div className="app">
-        <Navbar/>
+        {/* <Navbar/> */}
         <HeroSection/>
-        <Companies/>
-        <Courses/>
-        <Achievement/>
-        <Categories/>
-        <FeedBack/>
-        <CTA/>
-        <Footer/>
+        {/* <Companies/> */}
+        {/* <Courses/> */}
+        {/* <Achievement/> */}
+        {/* <Categories/> */}
+        {/* <FeedBack/> */}
+        {/* <CTA/> */}
+        {/* <Footer/> */}
     </div>
   )
 }

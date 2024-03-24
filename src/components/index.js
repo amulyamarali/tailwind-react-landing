@@ -8,4 +8,4 @@ import FeedBack from "./FeedBack";
 import CTA from "./CTA";
 import Footer from "./Footer";
 
-export { Navbar,HeroSection,Companies,Courses,Achievement,Categories,FeedBack,CTA,Footer }
+export { Navbar,HeroSection,Companies,Courses,Achievement,Categories,FeedBack,CTA,Footer}
