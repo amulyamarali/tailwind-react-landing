@@ -5,7 +5,7 @@ import Markdown from 'react-markdown';
 import { db } from '../../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-const Template = () => {
+const Temp = () => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [tags, setTags] = useState([]);
@@ -101,4 +101,4 @@ const Template = () => {
   );
 };
 
-export default Template;
+export default Temp;

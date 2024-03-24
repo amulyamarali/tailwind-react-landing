@@ -8,7 +8,8 @@ import App from './App'
 import './index.css'
 import { Courses} from './components';
 import { DataProvider } from './components/dataContext';
-import Template from './components/template';
+// import Template from './components/template';
+import Temp from './components/Temp';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/template",
-    element: <Template />,
+    element: <Temp />,
   }
 ]);
 
@@ -32,3 +33,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
      </DataProvider>
   </React.StrictMode>,
 )
+
